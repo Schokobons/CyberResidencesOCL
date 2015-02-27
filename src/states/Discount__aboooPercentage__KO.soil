@@ -5,3 +5,8 @@
 
 -- open -q <BASE>.soil
 -- here some mutation code
+
+
+! create G204_d1 : Discount
+ ! set G204_d1.percentage := 30
+ ! set G204_d1.label := 'ABOO'

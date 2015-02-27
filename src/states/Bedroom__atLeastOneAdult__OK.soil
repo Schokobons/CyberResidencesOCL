@@ -49,7 +49,7 @@
  
   ! insert (G204_r2_204,G204_franck) into occupiedRoom
   
-  ! create G204_rent3 : Rent between (G204_r2_204,G204_franck)
+! create G204_rent3 : Rent between (G204_r2_204,G204_franck)
  ! set G204_rent3.discount := 0
  ! set G204_rent3.rate := 50
  

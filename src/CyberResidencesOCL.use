@@ -207,7 +207,7 @@ context Residence inv allPrestigeBathrooms:
     -- the same number of bathroom that the number of beds.
 
 	self.category = Category::prestige implies 
-	self.bathrooms()->size() >= self.bedrooms()->size()
+	self.bedrooms()->forAll(b | (b.nbOfSingleBeds + b.nbOfDoubleBeds) <= b.bathrooms->size())
 -------------------------------------------------------------------------------
 --                                 atLeastABed
 -------------------------------------------------------------------------------
@@ -587,11 +587,9 @@ context Rent inv sboooConditions:
     -- label for this type of discount is SBOO. This type of discount
     -- does not apply on economy residences.
 
-	self.rentedBedrooms.residence.category <> Category::economy
-		and self.rentedBedrooms.bathrooms->exists(e:Bathroom|e.isOutOfOrder = true)
-		and self.discounts -> exists(e:Discount|e.label = 'SBOO') implies 
-	--		self.rentedBedrooms->forAll(e:Bedroom|e->one(isOutOfOrder = true))
-		self.rentedBedrooms.isOutOfOrder=true
+	if self.rentedBedrooms.residence.category = Category::economy then true else
+		self.rentedBedrooms.bathrooms->exists(e1,e2:Bathroom|e1.isOutOfOrder = true and e2.isOutOfOrder = false)
+		implies self.discounts -> exists(e:Discount|e.label = 'SBOO') endif
 
 -------------------------------------------------------------------------------
 --                               sboooPercentage
@@ -660,8 +658,8 @@ context Resident inv tutorAdult:
     -- A resident can not be the tutor of another resident if he or
     -- she is not an adult.
 	
-	self.age>=18 and self.tutored->notEmpty() 
-	implies self.tutored->forAll(e:Resident|e.age<18)
+	self.tutored->notEmpty() 
+	implies self.age >= 18
 
 -------------------------------------------------------------------------------
 --                               tutorInSameGroup
@@ -687,4 +685,5 @@ context Residence inv uniqueNumberApartForPrivateBathroom:
     -- All rooms have a distinct number, except private bathrooms.
 
 	self.rooms->forAll(e1,e2 : Room | (e1<>e2 implies e1.number <> e2.number) or
-		e1.oclIsKindOf(Bathroom) or e2.oclIsKindOf(Bathroom) )
+		(e1.oclAsType(Bathroom).isOnTheLanding = false and e1.number = e2.number) or (e2.oclAsType(Bathroom).isOnTheLanding = false and e2.number = e1.number) )	
+	

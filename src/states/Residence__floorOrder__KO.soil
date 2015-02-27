@@ -5,3 +5,11 @@
 
 -- open -q <BASE>.soil
 -- here some mutation code
+
+! create G204_r2 : Residence
+ ! set G204_r2.name := 'ouest'
+ ! set G204_r2.floorMin := 2
+ ! set G204_r2.floorMax := 1
+ ! set G204_r2.category := #economy
+ ! set G204_r2.maxNbOfFreeUnits := 0
+ ! set G204_r2.avgRate := 0
