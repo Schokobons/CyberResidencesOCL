@@ -277,10 +277,11 @@ context Residence inv deriveAvgRate:
     -- The average rate of a residence is the total revenue of the
     -- residence divided by the number of occupants. Tutored residents
     -- do not count in this rule.
-	--Set bedrooms() : Set(Bedroom) =
-    --    rooms->select(oclIsKindOf(Bedroom))->oclAsType(Set(Bedroom))
+	
 	if self.bedrooms().occupants->notEmpty() then 
-		self.avgRate=self.bedrooms().rent.rate->sum()/self.bedrooms().occupants->select(e| e.tutors->isEmpty())->size()
+		if self.bedrooms()->select(b | b.rent->notEmpty())->notEmpty() then
+		self.avgRate= self.bedrooms()->select(b | b.rent->notEmpty()).rent.rate->sum() / self.bedrooms().occupants->select(e| e.tutors->isEmpty())->size()
+		else self.avgRate= 0 endif
 	else self.avgRate= 0 endif
 -------------------------------------------------------------------------------
 --                                deriveDiscount
@@ -358,7 +359,6 @@ context Tenant inv derivePaidRate:
     -- spread over more than one floor, then 20€ of reduction will
     -- automatically be deduced.
 	
-	--let groupFloor : Set(Integer) = self.rentedBedrooms in rate
 		if (self.rentedBedrooms->forAll(e1,e2 : Bedroom |e1.floor=e2.floor ) ) then
 			self.paidRate = self.rent.rate->sum() else
 				self.paidRate = self.rent.rate->sum()-20

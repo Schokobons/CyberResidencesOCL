@@ -63,7 +63,13 @@
  ! set G204_franck.age := 27
  ! set G204_franck.gender := #male
  ! set G204_franck.isSmoker := false
- ! set G204_franck.paidRate := 50
+ ! set G204_franck.paidRate := 80
+ 
+ ! create G204_julien : Resident
+ ! set G204_julien.name := 'Julien Main'
+ ! set G204_julien.age := 25
+ ! set G204_julien.gender := #male
+ ! set G204_julien.isSmoker := false
  
  ! insert (G204_r2,G204_r2_204) into ContainsRooms
  ! insert (G204_r2,G204_r2_308) into ContainsRooms
@@ -75,6 +81,7 @@
  ! insert (G204_r1_101b,G204_r1_101) into IsInBedroom
  
   ! insert (G204_r2_204,G204_franck) into occupiedRoom
+  ! insert (G204_r1_101,G204_julien) into occupiedRoom
   
 ! create G204_rent1 : Rent between (G204_r2_204,G204_franck)
  ! set G204_rent1.discount := 0
